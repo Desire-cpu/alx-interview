@@ -1,62 +1,32 @@
 #!/usr/bin/python3
 
 
-"""
-Making Change
-"""
+"""Change making module."""
 
 
-def minimum_coins_needed(coins, total):
+def minimum_coins_needed(coins, target_amount):
     """
-    Return the minimum number of coins needed to meet a given total
+    Calculate the minimum number of coins needed to make up the target amount.
+
     Args:
-        coins (list of ints): a list of coins of different values
-        total (int): total value to be met
-    Return:
-        Number of coins or -1 if meeting the total is not possible
+    coins (list): List of coin denominations.
+    target_amount (int): The target amount to make up with coins.
+
+    Returns:
+    int: Minimum number of coins needed, or -1 if it's not possible.
     """
-    # Check if the total is non-positive
-    if total <= 0:
+
+    if target_amount <= 0:
         return 0
 
-    # Check if the coins list is empty or None
-    if not coins:
-        return -1
+    # Create an array to store the minimum number of coins required t.
+    min_coins = [float('inf')] * (target_amount + 1)
+    min_coins[0] = 0
 
-    try:
-        # Check if the total can be directly satisfied by one coin
-        coin_index = coins.index(total)
-        return 1
-    except ValueError:
-        pass
+    for coin in coins:
+        for i in range(coin, target_amount + 1):
+            # Update the minimum number of coins required for each value
+            min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
 
-    # Sort coins in descending order to optimize the greedy approach
-    coins.sort(reverse=True)
-
-    # Initialize the count of coins needed
-    coin_count = 0
-
-    # Iterate through the sorted coins
-    for coin_value in coins:
-        # Check if the total is a multiple of the current coin value
-        if total % coin_value == 0:
-            coin_count += int(total / coin_value)
-            return coin_count
-
-        # Check if the current coin value can be used to reduce the total
-        if total - coin_value >= 0:
-            # Check if multiple coins of the same value can be used
-            if int(total / coin_value) > 1:
-                coin_count += int(total / coin_value)
-                total = total % coin_value
-            else:
-                coin_count += 1
-                total -= coin_value
-                if total == 0:
-                    break
-
-    # Check if the total amount could not be reached
-    if total > 0:
-        return -1
-
-    return coin_count
+    # Return the minimum number of coins required to reach the target amount
+    return min_coins[target_amount] if min_coins[target_amount] != float('inf') else -1
