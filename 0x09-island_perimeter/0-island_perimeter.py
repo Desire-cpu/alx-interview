@@ -1,27 +1,29 @@
 #!/usr/bin/python3
-
+'''0x09. Island Perimeter'''
 
 def island_perimeter(grid):
-    per = 0
+    '''returns the perimeter of the island described in grid'''
+    counter = 0
+    grid_max = len(grid) - 1  # index of the last list in the grid
+    lst_max = len(grid[0]) - 1  # index of the last square in list
 
-    # Iterate through each cell in the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == 1:  # Check if the cell represents land
-                # Check the top boundary
-                if i == 0 or grid[i-1][j] == 0:
-                    per += 1
+    for lst_idx, lst in enumerate(grid):
+        for land_idx, land in enumerate(lst):
+            if land == 1:
+                # Check left side
+                if land_idx == 0 or lst[land_idx - 1] == 0:
+                    counter += 1
 
-                # Check the bottom boundary
-                if i == len(grid) - 1 or grid[i+1][j] == 0:
-                    per += 1
+                # Check right side
+                if land_idx == lst_max or lst[land_idx + 1] == 0:
+                    counter += 1
 
-                # Check the left boundary
-                if j == 0 or grid[i][j-1] == 0:
-                    per += 1
+                # Check top side
+                if lst_idx == 0 or grid[lst_idx - 1][land_idx] == 0:
+                    counter += 1
 
-                # Check the right boundary
-                if j == len(grid[0]) - 1 or grid[i][j+1] == 0:
-                    per += 1
+                # Check bottom side
+                if lst_idx == grid_max or grid[lst_idx + 1][land_idx] == 0:
+                    counter += 1
 
-    return per
+    return counter
