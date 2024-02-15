@@ -3,6 +3,7 @@
 Define isWinner function, a solution to the Prime Game problem
 """
 
+
 def primes(n):
     """Return list of prime numbers between 1 and n inclusive
        Args:
@@ -15,6 +16,7 @@ def primes(n):
             sieve[p*p:n+1:p] = [False] * len(sieve[p*p:n+1:p])
     return [i for i in range(n + 1) if sieve[i]]
 
+
 def isWinner(x, nums):
     """
     Determines winner of Prime Game
@@ -26,17 +28,17 @@ def isWinner(x, nums):
     """
     if x is None or nums is None or x == 0 or nums == []:
         return None
-    
+
     Maria = Ben = 0
     max_limit = max(nums)
     all_primes = primes(max_limit)
-    
+
     for i in range(x):
         if all_primes.count(nums[i]) % 2 == 0:
             Ben += 1
         else:
             Maria += 1
-    
+
     if Maria > Ben:
         return 'Maria'
     elif Ben > Maria:
